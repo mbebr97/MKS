@@ -20,6 +20,8 @@
 
 #include "stm32f0xx.h"
 
+#include "sct.h"
+
 
 #if !defined(__SOFT_FP__) && defined(__ARM_FP)
 #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
@@ -28,27 +30,16 @@
 
 
 int main(void)
+{sct_init();
+
+for(;;){
+	uint32_t y = 0;
+for (uint32_t y = 0; y<10; y++)
 {
+	sct_value(y*100 + y*10 + y);
+	for (volatile uint32_t i = 0; i < 100000; i++){}
+}
 
-	RCC->AHBENR |= RCC_AHBENR_GPIOAEN;
-	GPIOA->MODER |= GPIO_MODER_MODER5_0;
+}
 
-	uint32_t code = 0b10101001110111011100101010000000;
-
-	/* Loop forever */
-	for(;;) {
-
-		for (uint8_t ind = 0; ind < 32; ind++) {
-			if (code & (1UL << ind)) {
-				GPIOA->BSRR = (1 << 5);
-			} else {
-				GPIOA->BRR = (1 << 5);
-			}
-			for (volatile uint32_t i = 0; i < 100000; i++) {
-			}
-
-		}
-
-
-	}
 }
