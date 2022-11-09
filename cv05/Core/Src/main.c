@@ -108,7 +108,8 @@ void uart_process_command(char *cmd) {
 	else if  (strcasecmp(token, "READ") == 0) { //read adresa
 		uint16_t value;
 		token = strtok(NULL, " ");
-		HAL_I2C_Mem_Read(&hi2c1, EEPROM_ADDR, addr, I2C_MEMADD_SIZE_16BIT, &value, 1, 1000);
+		HAL_I2C_Mem_Read(&hi2c1, 0b10100000, token, I2C_MEMADD_SIZE_16BIT, &value, 1, 1000);
+		printf(value);
 
 		token = strtok(cmd, " "); // token reset
 	}
